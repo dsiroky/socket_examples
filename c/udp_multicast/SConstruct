@@ -1,0 +1,4 @@
+env = Environment()
+
+env.Program("subscriber", ["subscriber.c", "common.c"])
+env.Program("publisher", ["publisher.c", "common.c"])

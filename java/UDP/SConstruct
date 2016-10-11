@@ -1,0 +1,2 @@
+Jar("client.jar", [Glob("cli/*.java"), "cli/Manifest.mf"])
+Jar("server.jar", [Glob("srv/*.java"), "srv/Manifest.mf"])

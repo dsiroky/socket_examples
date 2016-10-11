@@ -1,0 +1,5 @@
+env = Environment()
+env.Append(LIBS=["pthread"])
+
+env.Program("cli", ["cli.c", "common.c"])
+env.Program("srv", ["srv.c", "common.c"])

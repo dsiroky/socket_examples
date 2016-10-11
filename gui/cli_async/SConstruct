@@ -1,0 +1,2 @@
+classes = Java("aclient", "src")
+Jar("client",  classes + ["Manifest.mf"])

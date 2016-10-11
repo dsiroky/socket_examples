@@ -1,0 +1,31 @@
+<project name="mydemo" default="build" basedir=".">
+
+<target name="build" depends="server,client">
+    <echo message="${basedir}"/>
+</target>
+
+<target name="server" depends="">
+    <echo message="Prekladam server"/>
+    <exec executable="javac" dir="${basedir}">
+        <arg value="serverTCPSingle.java"/>
+    </exec>
+</target>
+
+<target name="client" depends="">
+    <echo message="Prekladam clienta"/>
+    <exec executable="javac" dir="${basedir}">
+	<arg value="clientTCP.java"/>
+    </exec>
+</target>
+
+<target name="clean" depends="">
+    <echo message="Mazu binarky..."/>
+    <exec executable="rm" dir="${basedir}">
+	<arg value="-f"/>
+        <arg value="serverTCPSingle.class"/>
+	<arg value="clientTCP.class"/>
+    </exec>
+</target>
+
+</project>
+

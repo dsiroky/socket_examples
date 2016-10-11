@@ -1,0 +1,2 @@
+cli_classes = Java("clientTCP", "clientTCP.java")
+#Jar("client.jar", cli_classes)
