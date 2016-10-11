@@ -201,7 +201,8 @@ int main(int argc, char **argv)
                                             sock_to_offset);
         /* otherwise it is a connection socket ready for reading */
         else process_recv(i, &master_fds, &fdmax, reply, sock_to_offset);
-      } else if (FD_ISSET(i, &write_fds)) {
+      }
+      if (FD_ISSET(i, &write_fds)) {
         /* socket is ready to send data */
         process_send(i, &master_fds, &fdmax, reply, sock_to_offset);
       }
