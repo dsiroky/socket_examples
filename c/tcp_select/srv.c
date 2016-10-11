@@ -48,7 +48,7 @@ void process_accept(int listen_sock, fd_set *master_fds, int *fdmax,
   /* accept all new connections */
   for (;;) {
     incoming_addr_len = sizeof(incoming_addr);
-    incoming_sock = accept(listen_sock, (struct sockaddr*)&incoming_addr, 
+    incoming_sock = accept(listen_sock, (struct sockaddr*)&incoming_addr,
                       &incoming_addr_len);
     if (incoming_sock < 0)
     {
@@ -67,7 +67,7 @@ void process_accept(int listen_sock, fd_set *master_fds, int *fdmax,
         );
 
     sock_to_offset[incoming_sock] = 0;
-    
+
     FD_SET(incoming_sock, master_fds);
     if (incoming_sock > *fdmax) *fdmax = incoming_sock;
   };
@@ -75,7 +75,7 @@ void process_accept(int listen_sock, fd_set *master_fds, int *fdmax,
 
 /**************************************************************************/
 
-void process_send(int sock, fd_set *master_fds, int *fdmax, char *reply, 
+void process_send(int sock, fd_set *master_fds, int *fdmax, char *reply,
                         int *sock_to_offset)
 {
   int len;
@@ -95,7 +95,7 @@ void process_send(int sock, fd_set *master_fds, int *fdmax, char *reply,
 
     /* remove the socket from the master set */
     FD_CLR(sock, master_fds);
-    
+
     sock_to_offset[sock] = NOT_CONNECTED;
 
     /* clear the tail of the master set */
@@ -106,7 +106,7 @@ void process_send(int sock, fd_set *master_fds, int *fdmax, char *reply,
 
 /**************************************************************************/
 
-void process_recv(int sock, fd_set *master_fds, int *fdmax, char *reply, 
+void process_recv(int sock, fd_set *master_fds, int *fdmax, char *reply,
                         int *sock_to_offset)
 {
   char buf[RECV_BUFFER_SIZE];
@@ -158,7 +158,7 @@ int main(int argc, char **argv)
   {
     close(listen_sock);
     err("ioctl nonblock");
-  }  
+  }
 
   /* set reusable flag */
   optval = 1;
