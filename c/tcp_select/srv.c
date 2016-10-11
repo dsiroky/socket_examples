@@ -54,6 +54,7 @@ void process_accept(int listen_sock, fd_set *master_fds, int *fdmax,
     {
       /* if errno == EWOULDBLOCK ... not waiting incoming connections
        *                             and accept would block*/
+      //                            see a note near select()
       if (errno != EWOULDBLOCK)
       {
         close(listen_sock);
@@ -83,7 +84,16 @@ void process_send(int sock, fd_set *master_fds, int *fdmax, char *reply,
 
   send_size = MIN(SEND_SIZE, LARGE_MESSAGE_SIZE - sock_to_offset[sock]);
   len = send(sock, reply + sock_to_offset[sock], send_size, 0);
-  if (len < 0) err("send");
+  if (len < 0)
+  {
+    // == EWOULDBLOCK: system might be still full, see a note near select()
+    if (errno != EWOULDBLOCK)
+    {
+      printf("recv error (%i, %s)\n", errno, strerror(errno));
+      // TODO close and release the socket
+      return;
+    }
+  }
   sock_to_offset[sock] += len;
   printf("socket %i, %i bytes sent, %i to go\n", sock, len,
         LARGE_MESSAGE_SIZE - sock_to_offset[sock]);
@@ -114,6 +124,15 @@ void process_recv(int sock, fd_set *master_fds, int *fdmax, char *reply,
 
   recv_len = recv(sock, buf, RECV_BUFFER_SIZE, 0);
   printf("socket %i, %i bytes received\n", sock, recv_len);
+  if (recv_len < 0)
+  {
+    // == EWOULDBLOCK: there might not be data, see a note near select()
+    if (errno != EWOULDBLOCK)
+    {
+      printf("recv error (%i, %s)\n", errno, strerror(errno));
+      return;
+    }
+  }
 
   /* initiate reply */
   process_send(sock, master_fds, fdmax, reply, sock_to_offset);
@@ -190,6 +209,8 @@ int main(int argc, char **argv)
       close(listen_sock);
       err("select");
     }
+    // NOTE: select might return with non-zero bits even if there is no event
+    // pending (accept/recv/send might block)
     printf("select is OK\n");
 
     for (i = 0; i <= fdmax; i++)
