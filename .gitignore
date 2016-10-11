@@ -2,5 +2,3 @@
 *.class
 *.jar
 .scons*
-cli
-srv
