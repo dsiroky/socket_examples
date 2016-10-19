@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <signal.h>
 
 #include <sys/socket.h>
 #include <netdb.h>
@@ -14,6 +15,9 @@
 
 int main(int argc, char **argv)
 {
+  // avoid SIGPIPE signals on writing to a closed connection
+  signal(SIGPIPE, SIG_IGN);
+
   int sock;
   char *hostname;
   struct hostent *hostinfo;

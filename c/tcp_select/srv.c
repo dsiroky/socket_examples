@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#include <signal.h>
 
 #include <sys/select.h>
 #include <sys/ioctl.h>
@@ -146,6 +147,9 @@ void process_recv(int sock, fd_set *master_fds, int *fdmax, char *reply,
 
 int main(int argc, char **argv)
 {
+  // avoid SIGPIPE signals on writing to a closed connection
+  signal(SIGPIPE, SIG_IGN);
+
   fd_set master_fds; /* master file descriptor list */
   fd_set read_fds; /* temp file descriptor list for read events */
   fd_set write_fds; /* temp file descriptor list for write events */

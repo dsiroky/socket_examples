@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+#include <signal.h>
 
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -13,6 +14,9 @@
 
 int main(int argc, char **argv)
 {
+  // avoid SIGPIPE signals on writing to a closed connection
+  signal(SIGPIPE, SIG_IGN);
+
   int sock, incoming_sock;
   int optval;
   struct sockaddr_in addr, incoming_addr;
