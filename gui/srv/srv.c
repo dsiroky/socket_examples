@@ -28,7 +28,7 @@ int echo(int sock)
   ssize_t recv_count = 0, send_count = 0;
 
   recv_count = recv(sock, buffer, sizeof(buffer), 0);
-  if (recv_count < 0)
+  if (recv_count <= 0)
   {
     print_err("recv");
     return 0;
