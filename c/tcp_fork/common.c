@@ -46,11 +46,11 @@ int recv_txt(int sock)
   int txtlen;
   uint32_t txtlen_net;
 
-  if (recv(sock, (void *)&txtlen_net, sizeof(txtlen_net), 0) < 0) return 0;
+  if (recv(sock, (void *)&txtlen_net, sizeof(txtlen_net), 0) <= 0) return 0;
   txtlen = ntohl(txtlen_net);
   if (txtlen > MAX_TXT_LENGTH) return 0;
 
-  if (recv(sock, (void *)buf, txtlen, 0) < 0) return 0;
+  if (recv(sock, (void *)buf, txtlen, 0) <= 0) return 0;
   buf[txtlen] = '\0'; /* C string terminator */
 
   printf("received: %s\n", buf);
@@ -61,8 +61,10 @@ int recv_txt(int sock)
 
 void send_greetings(int sock)
 {
-  recv_txt(sock);
-  send_txt(sock, "welcome!");
+  if (recv_txt(sock))
+  {
+    send_txt(sock, "welcome!");
+  } else {
+    printf("recv_txt failed\n");
+  }
 }
-
-

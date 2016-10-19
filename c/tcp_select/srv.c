@@ -124,7 +124,11 @@ void process_recv(int sock, fd_set *master_fds, int *fdmax, char *reply,
 
   recv_len = recv(sock, buf, RECV_BUFFER_SIZE, 0);
   printf("socket %i, %i bytes received\n", sock, recv_len);
-  if (recv_len < 0)
+  if (recv_len == 0)
+  {
+    printf("closed connection\n");
+    return;
+  } else if (recv_len < 0)
   {
     // == EWOULDBLOCK: there might not be data, see a note near select()
     if (errno != EWOULDBLOCK)
