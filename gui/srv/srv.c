@@ -93,6 +93,7 @@ int main(int argc, char** argv)
     if (incoming_sock < 0)
     {
       print_err("accept");
+      shutdown(sock, SHUT_RDWR);
       close(sock);
       continue;
     }
@@ -102,6 +103,7 @@ int main(int argc, char** argv)
               ntohs(incoming_addr.sin_port)
           );
     while (echo(incoming_sock)) {}
+    shutdown(incoming_sock, SHUT_RDWR);
     close(incoming_sock);
   }
 

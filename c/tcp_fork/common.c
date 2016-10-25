@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
+#include <unistd.h>
 
 #include <sys/socket.h>
 #include <arpa/inet.h>
@@ -67,4 +68,12 @@ void send_greetings(int sock)
   } else {
     printf("recv_txt failed\n");
   }
+}
+
+/****************************************************************************/
+
+void close_socket(int sock)
+{
+  shutdown(sock, SHUT_RDWR);
+  close(sock);
 }

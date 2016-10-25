@@ -51,17 +51,17 @@ int main(int argc, char **argv)
 
   if (!send_txt(sock, "hello!"))
   {
-    close(sock);
+    close_socket(sock);
     err("send hello");
   }
 
   if (!recv_txt(sock))
   {
-    close(sock);
+    close_socket(sock);
     err("recv greetings");
   }
 
-  close(sock);
+  close_socket(sock);
   return 0;
 }
 

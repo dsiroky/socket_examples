@@ -8,5 +8,6 @@ void err(char *msg);
 int send_txt(int sock, char *txt);
 int recv_txt(int sock);
 void send_greetings(int sock);
+void close_socket(int sock);
 
 #endif

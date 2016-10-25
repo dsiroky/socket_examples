@@ -54,7 +54,7 @@ int main(int argc, char **argv)
 
   if (send(sock, hello, strlen(hello), 0) < 0)
   {
-    close(sock);
+    close_socket(sock);
     err("send hello");
   }
 
@@ -63,14 +63,14 @@ int main(int argc, char **argv)
     recv_len = recv(sock, recv_buf, RECV_BUFFER_SIZE, 0);
     if (recv_len <= 0)
     {
-      close(sock);
+      close_socket(sock);
       err("recv");
     }
     printf("%i bytes received\n", recv_len);
     recv_counter += recv_len;
   }
 
-  close(sock);
+  close_socket(sock);
   return 0;
 }
 

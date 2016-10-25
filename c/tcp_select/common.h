@@ -7,5 +7,6 @@
 #define SEND_SIZE (64 * 1024)
 
 void err(char *msg);
+void close_socket(int sock);
 
 #endif

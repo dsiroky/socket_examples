@@ -46,7 +46,7 @@ int main(int argc, char **argv)
                       &incoming_addr_len);
     if (incoming_sock < 0)
     {
-      close(sock);
+      close_socket(sock);
       err("accept");
     }
     printf("connection from %s:%i\n",
@@ -56,7 +56,7 @@ int main(int argc, char **argv)
     if (fork() == 0) 
     {
       send_greetings(incoming_sock);
-      close(incoming_sock);
+      close_socket(incoming_sock);
       break;
     }
   }

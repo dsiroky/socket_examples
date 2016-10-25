@@ -58,7 +58,7 @@ void process_accept(int listen_sock, fd_set *master_fds, int *fdmax,
       //                            see a note near select()
       if (errno != EWOULDBLOCK)
       {
-        close(listen_sock);
+        close_socket(listen_sock);
         err("accept");
       }
       break;
@@ -102,7 +102,7 @@ void process_send(int sock, fd_set *master_fds, int *fdmax, char *reply,
   /* all data sent */
   if (sock_to_offset[sock] == LARGE_MESSAGE_SIZE)
   {
-    close(sock);
+    close_socket(sock);
 
     /* remove the socket from the master set */
     FD_CLR(sock, master_fds);
@@ -209,6 +209,7 @@ int main(int argc, char **argv)
   {
     /* copy it */
     memcpy(&read_fds, &master_fds, sizeof(master_fds));
+    // TODO no copy, set selectively
     memcpy(&write_fds, &master_fds, sizeof(master_fds));
 
     /* wait for any action */
